@@ -4,25 +4,42 @@ import {  StyleSheet, Text, TextInput, View,TouchableOpacity,  FlatList, Pressab
 
 export default function App() {
   const [textItem, setTextITem] = useState("");
-  const [List, setList] = useState([]);
+  const [list, setList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [itemSelected, setItemSelected] = useState({});
 
-  const onHandleChangeItem = (t) => {
-    setTextITem(t);
-  };
+  const onHandleChangeItem = (t) => setTextITem(t);
 
   const addItem = ( ) => {
-    setList(currentList => [
-      ...currentList,
+    setList(currentState => [
+      ...currentState,
       {id: Math.random().toString(), value: textItem},
     ]);
     setTextITem("");
   };
+
+ const selectedItem = (id) => {
+    setItemSelected(list.filter(item => item.id === id) [0])
+    setModalVisible(true)
+  } 
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => selectedItem(item.id)}>
       <Text>{item.value}</Text>
     </TouchableOpacity>
   );
+
+ 
+
+
+  const deleteITem = (id) => {
+    setList((currentState) =>
+      currentState.filter((item) => item.id !== itemSelected.id)
+     );
+     setItemSelected({});
+     setModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 30}}>Shoopping list</Text>
@@ -40,12 +57,14 @@ export default function App() {
       </View>
       <View>
         <FlatList
-        data={List}
+        data={list}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}/>
+        keyExtractor={(item) => item.id}
+        />
       </View>
+
       <Modal
-        animationType= "slide"
+        animationType= "fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -54,11 +73,17 @@ export default function App() {
         }}
         >
           <View style={styles.centeredView}>
-            <View style={{backgroundColor: "white"}}></View>
+            <View style={{backgroundColor: "white"}}>
+              <Text>Queres Eliminar este elemento? </Text>
+              <Pressable 
+                onPress={() => deleteITem()}
+                style={{ backgroundColor: "red"}}
+                >
+                  <Text style={styles.textStyle}>Eliminar</Text>
+              </Pressable>
+            </View>
           </View>
-
-      </Modal>
-      
+      </Modal>    
     </View>      
     
   );
@@ -67,35 +92,36 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding:30,
-    marginTop:50,
-  },
-  addItem: {
-    marginTop: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  input: {
-    width: 200,
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
+    backgroundColor: "#344955",
+    alignItems: "center",
+    padding: 100,
     
   },
-  items: {
-    marginTop:50,
-    height:30,
+  inputcontainer: {
+    marginTop:30,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 30,
+  },
+  inputStyle: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    width: 250,
+  },
+  button: {
+    backgroundColor: "#F9AA33",
+    height: 35,
+    width: 45,
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+    borderRadius: 15,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
 });
-
-<View>
-    {itemList.map((item) =>(
-      <View style={styles.items}>
-        <Text>{item.value}</Text>
-      </View>
-
-    ))}
-</View>
