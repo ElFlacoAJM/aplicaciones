@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, StyleSheet, TextInput, View, Text, FlatList, Modal, } from 'react-native';
+import {  StyleSheet, Text, TextInput, View,TouchableOpacity,  FlatList, Pressable, Modal, Alert, } from 'react-native';
 
 export default function App() {
   const [textItem, setTextITem] = useState("");
-  const [itemList, setItemList] = useState([]);
+  const [List, setList] = useState([]);
 
   const onHandleChangeItem = (t) => {
     setTextITem(t);
   };
 
   const addItem = ( ) => {
-    setItemList(currentList => [
+    setList(currentList => [
       ...currentList,
       {id: Math.random().toString(), value: textItem},
     ]);
@@ -19,29 +19,45 @@ export default function App() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.items}>
+    <TouchableOpacity onPress={() => selectedItem(item.id)}>
       <Text>{item.value}</Text>
-      <Button title='presiona' />
-    </View>
+    </TouchableOpacity>
   );
   return (
     <View style={styles.container}>
-      <Text>Shoopping list</Text>
-      <View style={styles.addItem}>
+      <Text style={{ fontSize: 30}}>Shoopping list</Text>
+      <View style={styles.inputcontainer}>
         <TextInput  
+          placeholder='New Item'
+          placeholderTextColor= "white"
+          style={styles.inputStyle}
           value= {textItem} 
-          style={styles.input} 
-          placeholder='Add your item'
           onChangeText={onHandleChangeItem}
        />
-        <Button title='ADD' onPress={addItem} />
+        <TouchableOpacity style={styles.button} onPress={addItem}>
+          <Text> Add </Text>
+        </TouchableOpacity>
       </View>
       <View>
         <FlatList
-        data={itemList}
+        data={List}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}/>
       </View>
+      <Modal
+        animationType= "slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+        >
+          <View style={styles.centeredView}>
+            <View style={{backgroundColor: "white"}}></View>
+          </View>
+
+      </Modal>
       
     </View>      
     
@@ -74,3 +90,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
+
+<View>
+    {itemList.map((item) =>(
+      <View style={styles.items}>
+        <Text>{item.value}</Text>
+      </View>
+
+    ))}
+</View>
