@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import {  StyleSheet, Text, TextInput, View,TouchableOpacity,  FlatList, Pressable, Modal, Alert, } from 'react-native';
+import {  StyleSheet, Text, TextInput, View,TouchableOpacity,  FlatList, Pressable, Modal, Button, } from 'react-native';
 
 export default function App() {
   const [textItem, setTextITem] = useState("");
@@ -8,10 +7,10 @@ export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemSelected, setItemSelected] = useState({});
 
-  const onHandleChangeItem = (t) => setTextITem(t);
+  const onHandleChange = (t) => setTextITem(t);
 
   const addItem = ( ) => {
-    setList(currentState => [
+    setList((currentState) => [
       ...currentState,
       {id: Math.random().toString(), value: textItem},
     ]);
@@ -19,19 +18,10 @@ export default function App() {
   };
 
  const selectedItem = (id) => {
-    setItemSelected(list.filter(item => item.id === id) [0])
-    setModalVisible(true)
-  } 
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => selectedItem(item.id)}>
-      <Text>{item.value}</Text>
-    </TouchableOpacity>
-  );
-
- 
-
-
+    setItemSelected(list.filter(item => item.id === id) [0]);
+    setModalVisible(true);
+  }; 
+  
   const deleteITem = (id) => {
     setList((currentState) =>
       currentState.filter((item) => item.id !== itemSelected.id)
@@ -40,6 +30,14 @@ export default function App() {
      setModalVisible(false);
   };
 
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => selectedItem(item.id)}>
+      <Text>{item.value}</Text>
+    </TouchableOpacity>
+  );
+
+ 
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 30}}>Shoopping list</Text>
@@ -49,7 +47,7 @@ export default function App() {
           placeholderTextColor= "white"
           style={styles.inputStyle}
           value= {textItem} 
-          onChangeText={onHandleChangeItem}
+          onChangeText={onHandleChange}
        />
         <TouchableOpacity style={styles.button} onPress={addItem}>
           <Text> Add </Text>
@@ -92,13 +90,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#344955",
+    backgroundColor: "blue",
     alignItems: "center",
     padding: 100,
     
   },
   inputcontainer: {
-    marginTop:30,
+    marginTop:50,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
@@ -108,15 +106,15 @@ const styles = StyleSheet.create({
   inputStyle: {
     borderBottomColor: "black",
     borderBottomWidth: 1,
-    width: 250,
+    width: 200,
   },
   button: {
-    backgroundColor: "#F9AA33",
+    backgroundColor: "green",
     height: 35,
-    width: 45,
+    width: 65,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
+    borderRadius: 25,
   },
   centeredView: {
     flex: 1,
