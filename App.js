@@ -40,7 +40,7 @@ export default function App() {
  
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30}}>Shoopping list</Text>
+      <Text style={{ fontSize: 30}}>Shoopping List 🛍️   🛍️   🛍️   🛍️</Text>
       <View style={styles.inputcontainer}>
         <TextInput  
           placeholder='New Item'
